@@ -2,13 +2,13 @@
 import { FormEvent, useState, ChangeEvent } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { createUser } from "@/services/user"
-import { FormProps } from "@/types"
-import RegisterFormImage from "../../public/images/register-form.jpeg"
+import { createUser } from "@/actions"
+import { RegisterFormProps } from "@/types"
+import RegisterFormImage from "../../../public/images/register-form.jpeg"
 
 export const RegisterForm = () => {
 
-    const [formData, setFormData] = useState<FormProps>({
+    const [formData, setFormData] = useState<RegisterFormProps>({
         email: "",
         fullName: "",
         password: "",

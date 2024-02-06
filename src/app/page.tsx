@@ -1,10 +1,9 @@
-export default function Home() {
+import { getToken } from "@/actions";
+
+export default async function Home() {
+  await getToken();
+
   return (
-    <main className="w-[100%] h-[100vh] flex flex-col align-center">
-      <h1>coffee store</h1>
-
-      <h3>index</h3>
-
-    </main>
+    <h1>index page</h1>
   );
 }

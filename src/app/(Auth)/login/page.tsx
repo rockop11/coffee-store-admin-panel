@@ -1,6 +1,17 @@
-const LoginPage = () => {
+import { LoginForm } from "@/components"
+import { getToken } from "@/actions"
+import { redirect } from "next/navigation"
+
+async function checkToken () {
+  const response = await getToken()
+  if(response.value) redirect("/dashboard")
+}
+
+const LoginPage = async () => {
+  await checkToken()
+  
   return (
-    <div>LoginPage</div>
+    <LoginForm />
   )
 }
 
