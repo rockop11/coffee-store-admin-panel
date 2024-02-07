@@ -80,7 +80,7 @@ export const RegisterForm = () => {
             </form>
 
             <div className="relative w-[50%]">
-                <Image src={RegisterFormImage} alt="coffee" className="absolute brightness-50" fill />
+                {/* <Image src={RegisterFormImage} alt="coffee" className="absolute brightness-50" fill priority sizes="100vw"/> */}
                 <div className="relative z-10 top-[35%] flex flex-col">
                     <h2 className="text-center text-3xl text-white">Bienvenido</h2>
                     <p className="text-center text-white">completá el formulario para poder crear un usuario, y asi empezar a gestionar</p>

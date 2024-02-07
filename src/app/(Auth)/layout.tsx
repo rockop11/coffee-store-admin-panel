@@ -4,8 +4,11 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <section>
-      {/* Include shared UI here e.g. a header or sidebar */}
+    <section
+      className="
+        w-[100%] h-[100vh] 
+        flex flex-col justify-center items-center
+      ">
       {children}
     </section>
   )
