@@ -56,9 +56,9 @@ export async function login(formData: LoginFormProps): Promise<TokenResponse> {
     }
 }
 
-export async function getToken(): Promise<Token>  {
+export async function getToken()  {
     const token = cookies().get("token")
-    if (!token) redirect("/login")
+    // if (!token) redirect("/login")
     return token
 }
 
@@ -66,4 +66,8 @@ export async function getUserData(): Promise<UserData>{
     const token = cookies().get("token")
     const decodedUser = jwt.decode(`${token?.value}`) as UserData
     return decodedUser
+}
+
+export async function deleteToken() {
+    cookies().delete("token")
 }

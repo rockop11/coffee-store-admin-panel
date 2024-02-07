@@ -4,7 +4,8 @@ import { redirect } from "next/navigation"
 
 async function checkToken () {
   const response = await getToken()
-  if(response.value) redirect("/dashboard")
+  // console.log(response)
+  if(response?.value) redirect("/dashboard")
 }
 
 const LoginPage = async () => {
