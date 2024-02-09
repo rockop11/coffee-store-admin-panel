@@ -1,11 +1,12 @@
 "use client"
 import { ChangeEvent, FormEvent, useState } from "react"
+import { useRouter } from 'next/navigation'
+import Link from "next/link"
+import { Button } from "../ui"
 import { FaLock, FaEyeSlash, FaEye } from "react-icons/fa6";
 import { MdAlternateEmail } from "react-icons/md";
-import { useRouter } from 'next/navigation'
 import { login } from "@/actions"
 import { LoginFormProps } from "@/types"
-import Link from "next/link"
 
 export const LoginForm = () => {
 
@@ -102,9 +103,7 @@ export const LoginForm = () => {
                     )
                 }
 
-                <button className="bg-blue p-1 text-white hover:bg-blueHover transition-colors">
-                    Ingresar
-                </button>
+                <Button value="Ingresar" type="submit" />
 
                 <p className="text-gray">No tenés cuenta? <Link href="/register" className="text-blue">Registrate</Link></p>
             </form>

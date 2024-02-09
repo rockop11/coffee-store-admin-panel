@@ -8,6 +8,7 @@ import { FaUserShield } from "react-icons/fa";
 import { createUser } from "@/actions"
 import { RegisterFormProps } from "@/types"
 import toast, { Toaster } from 'react-hot-toast';
+import { Button } from "../ui";
 
 
 export const RegisterForm = () => {
@@ -42,7 +43,6 @@ export const RegisterForm = () => {
         const { status } = await createUser(formData)
 
         if (status === 400) {
-            console.log(status)
             setValidations(!validations)
             toast.error("Hubo un error")
         }
@@ -132,9 +132,7 @@ export const RegisterForm = () => {
                     )
                 }
 
-                <button type="submit" className="bg-blue p-1 text-white hover:bg-blueHover transition-colors">
-                    Registrarse
-                </button>
+                <Button value="Registrarse" type="submit" />
 
                 <p className="text-center">Ya tenés cuenta? <Link href="/login" className="text-blue">Ingresá</Link></p>
             </form>
