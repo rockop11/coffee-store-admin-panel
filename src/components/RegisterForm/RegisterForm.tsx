@@ -1,12 +1,17 @@
 "use client"
-import { FormEvent, useState, ChangeEvent } from "react"
-import Image from "next/image"
+import { useState, FormEvent, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link"
+import { MdAlternateEmail } from "react-icons/md";
+import { FaLock, FaEyeSlash, FaEye, FaUser, } from "react-icons/fa6";
+import { FaUserShield } from "react-icons/fa";
 import { createUser } from "@/actions"
 import { RegisterFormProps } from "@/types"
-import RegisterFormImage from "../../../public/images/register-form.jpeg"
+import toast, { Toaster } from 'react-hot-toast';
+
 
 export const RegisterForm = () => {
+    const router = useRouter()
 
     const [formData, setFormData] = useState<RegisterFormProps>({
         email: "",
@@ -14,6 +19,14 @@ export const RegisterForm = () => {
         password: "",
         role: ""
     })
+
+    const [validations, setValidations] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+
+
+    const showPasswordHandler = () => {
+        setShowPassword(!showPassword)
+    }
 
     const formDataHandler = ({ target }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = target
@@ -26,66 +39,105 @@ export const RegisterForm = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        await createUser(formData)
+        const { status } = await createUser(formData)
+
+        if (status === 400) {
+            console.log(status)
+            setValidations(!validations)
+            toast.error("Hubo un error")
+        }
+
+        if (status === 200) {
+            toast.success('Se ha creado el usuario')
+            setTimeout(() => {
+                router.push("/login")
+            }, 2000)
+        }
     }
 
     return (
-        <div className="flex w-[750px] h-[500px] border border-slate-400 rounded-md">
+        <div className="flex flex-col justify-center items-center
+            py-2 gap-4
+            shadow-lg
+            w-[85%]
+            md:max-w-[400px]
+        ">
+            <Toaster />
+            <h3>Registro</h3>
             <form
-                className="flex flex-col justify-center items-center p-4 gap-8 w-[50%]"
+                className="flex flex-col gap-8 p-2"
                 onSubmit={handleSubmit}
             >
+                <div className="flex items-center gap-4">
+                    <MdAlternateEmail className={`text-gray ${validations && "text-red"}`} />
+                    <input
+                        className={`border-b border-gray outline-none text-gray p-1 ${validations && "border-red"}`}
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        onChange={formDataHandler}
+                        autoComplete="off"
+                    />
+                </div>
 
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    className="border-b-[1px] ml-2 outline-none"
-                    onChange={formDataHandler}
-                />
+                <div className="flex items-center gap-4 relative">
+                    <FaLock size={16} className={`text-gray ${validations && "text-red"}`} />
+                    <div className="absolute right-2">
+                        {
+                            showPassword
+                                ? <FaEyeSlash size={16} className="text-gray" onClick={showPasswordHandler} />
+                                : <FaEye size={16} className="text-gray" onClick={showPasswordHandler} />
+                        }
 
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Contraseña"
-                    className="border-b-[1px] ml-2 outline-none"
-                    onChange={formDataHandler}
-                />
+                    </div>
+                    <input
+                        className={`border-b border-gray outline-none text-gray p-1 ${validations && "border-red"}`}
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Contraseña"
+                        onChange={formDataHandler}
+                    />
+                </div>
 
-                <input
-                    type="text"
-                    name="fullName"
-                    placeholder="Nombre Completo"
-                    className="border-b-[1px] ml-2 outline-none"
-                    onChange={formDataHandler}
-                />
+                <div className="flex items-center gap-4">
+                    <FaUser className={`text-gray ${validations && "text-red"}`} />
+                    <input
+                        type="text"
+                        name="fullName"
+                        placeholder="Nombre Completo"
+                        className={`border-b border-gray outline-none text-gray p-1 ${validations && "border-red"}`}
+                        onChange={formDataHandler}
+                    />
+                </div>
 
-                <select
-                    name="role"
-                    className="border-b-[1px] ml-2 outline-none"
-                    onChange={formDataHandler}
-                >
-                    <option value="">Seleccione un rol</option>
-                    <option value='User'>Usuario</option>
-                    <option value="Admin">Admin</option>
-                </select>
 
-                <button
-                    className=" rounded bg-brown p-2 text-white"
-                >
-                    Registrar
+                <div className="flex items-center gap-4">
+                    <FaUserShield className={`text-gray ${validations && "text-red"}`} />
+                    <select
+                        name="role"
+                        className={`border-b border-gray outline-none text-gray p-1 w-[100%] ${validations && "border-red"}`}
+                        onChange={formDataHandler}
+                    >
+                        <option value="">Seleccione un rol</option>
+                        <option value='User'>Usuario</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+
+                {
+                    validations && (
+                        <div className="text-center">
+                            <p className="text-red text-sm">Debes completar todos los campos</p>
+                        </div>
+                    )
+                }
+
+                <button type="submit" className="bg-blue p-1 text-white hover:bg-blueHover transition-colors">
+                    Registrarse
                 </button>
 
-                <p>Ya tenés cuenta? <Link href="/login" className="text-brown">Ingresá</Link></p>
+                <p className="text-center">Ya tenés cuenta? <Link href="/login" className="text-blue">Ingresá</Link></p>
             </form>
-
-            <div className="relative w-[50%]">
-                {/* <Image src={RegisterFormImage} alt="coffee" className="absolute brightness-50" fill priority sizes="100vw"/> */}
-                <div className="relative z-10 top-[35%] flex flex-col">
-                    <h2 className="text-center text-3xl text-white">Bienvenido</h2>
-                    <p className="text-center text-white">completá el formulario para poder crear un usuario, y asi empezar a gestionar</p>
-                </div>
-            </div>
         </div>
     )
 }

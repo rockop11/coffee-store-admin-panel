@@ -1,6 +1,7 @@
 "use client"
 import { ChangeEvent, FormEvent, useState } from "react"
-import { FaUser, FaLock, FaEyeSlash, FaEye } from "react-icons/fa6";
+import { FaLock, FaEyeSlash, FaEye } from "react-icons/fa6";
+import { MdAlternateEmail } from "react-icons/md";
 import { useRouter } from 'next/navigation'
 import { login } from "@/actions"
 import { LoginFormProps } from "@/types"
@@ -62,7 +63,7 @@ export const LoginForm = () => {
                 onSubmit={handleSubmit}
             >
                 <div className="flex items-center gap-4">
-                    <FaUser className={`text-gray ${validations && "text-red"}`} />
+                    <MdAlternateEmail className={`text-gray ${validations && "text-red"}`} />
                     <input
                         className={`border-b border-gray outline-none text-gray p-1 ${validations && "border-red"}`}
                         type="email"
@@ -101,7 +102,7 @@ export const LoginForm = () => {
                     )
                 }
 
-                <button className="bg-blue p-1 text-white">
+                <button className="bg-blue p-1 text-white hover:bg-blueHover transition-colors">
                     Ingresar
                 </button>
 

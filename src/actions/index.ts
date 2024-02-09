@@ -2,23 +2,40 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { prisma } from "@/utils/prisma";
-import { RegisterFormProps, LoginFormProps, TokenResponse, Token, UserData } from "@/types";
+import { RegisterFormProps, LoginFormProps, TokenResponse, UserData } from "@/types";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import { redirect } from "next/navigation";
 
 export async function createUser(formData: RegisterFormProps) {
-    const hashedPassword = await bcrypt.hash(formData.password, 10)
+    const { email, fullName, password, role } = formData
 
-    await prisma.user.create({
-        data: {
-            email: formData.email,
-            name: formData.fullName,
-            password: hashedPassword,
-            role: formData.role
+    if (!email.length ||
+        !fullName.length ||
+        !password.length ||
+        !role.length
+    ) {
+        return {
+            message: "error",
+            status: 400
         }
-    })
-    revalidatePath("/")
+    } else {
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        await prisma.user.create({
+            data: {
+                email: formData.email,
+                fullName: formData.fullName,
+                password: hashedPassword,
+                role: formData.role
+            }
+        })
+        revalidatePath("/")
+
+        return {
+            status: 200,
+            message: "user created"
+        }
+    }
 }
 
 export async function login(formData: LoginFormProps): Promise<TokenResponse> {
@@ -56,13 +73,12 @@ export async function login(formData: LoginFormProps): Promise<TokenResponse> {
     }
 }
 
-export async function getToken()  {
+export async function getToken() {
     const token = cookies().get("token")
-    // if (!token) redirect("/login")
     return token
 }
 
-export async function getUserData(): Promise<UserData>{
+export async function getUserData(): Promise<UserData> {
     const token = cookies().get("token")
     const decodedUser = jwt.decode(`${token?.value}`) as UserData
     return decodedUser

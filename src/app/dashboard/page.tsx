@@ -1,7 +1,5 @@
 import { getToken, getUserData } from "@/actions"
-import { UserData } from "@/types"
 import { redirect } from "next/navigation"
-// import Logout from "@/components/Logout/Logout"
 
 async function checkToken() {
     const response = await getToken()
@@ -19,7 +17,7 @@ const DashboardPage = async () => {
 
     return (
         <div>
-            <h3>Hola {userData?.data?.name}</h3>
+            <h3>Hola {userData?.data?.fullName}</h3>
         </div>
     )
 }

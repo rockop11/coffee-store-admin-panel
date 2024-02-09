@@ -14,6 +14,7 @@ const config: Config = {
       green: "#22c55e",
       darkGrenn: "#166534",
       blue: "#0ea5e9",
+      blueHover: "#2563eb",
       darkBlue: "#1e40af",
       red: "#ef4444",
       darkRed: "#991b1b",

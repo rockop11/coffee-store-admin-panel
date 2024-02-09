@@ -15,7 +15,7 @@ export type UserData = {
         email: string,
         id: string,
         password: string,
-        name: string,
+        fullName: string,
         role: string,
     }
     createdAt: Date,
